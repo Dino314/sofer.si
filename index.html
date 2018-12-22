@@ -1,0 +1,34 @@
+<html>
+	<head>
+		<link rel="stylesheet" href="style.css">
+		<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+		<script src="script.js"></script>
+	</head>
+	<body>
+		<!--Login field-->
+		<div id="loginform">
+			<form name="loginForm">
+				Username: <input type="text" id="login_ime" value="dino"/></br>
+				Password: <input type="password" id="login_geslo" value="pass"/>
+							
+				<input type="button" id="loginButton" value="Log in"/>
+			</form>
+			<button onclick="registerLogin()">Sign up</button>
+			<p id="infoFormLog">infoFormLog</p>
+		</div>
+		
+		<!--Registration field, hidden on beginning-->
+		<div id="registerform">
+			<form name="registerForm">
+				Username: <input type="text" id="register_ime"/></br>
+				Password: <input type="password" id="register_geslo"/></br>
+				E-mail: <input type="email" id="register_mail"/>
+				
+				<input type="button" id="registerButton" value="Register"/>
+			</form>
+			<button onclick="registerLogin()">Log in</button>
+			<p id="infoFormReg">infoFormReg</p>
+		
+		</div>
+	</body>
+</html>
