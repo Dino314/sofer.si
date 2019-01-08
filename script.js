@@ -61,7 +61,7 @@ $(document).ready(function(){
 			var data={
 				uporabnisko_ime:login,
 				geslo:pass
-				};
+			};
 			
 			//sending data via POST method to a php script, returns a response
 			$.post("register.php", data, function(response, status){
@@ -78,6 +78,47 @@ $(document).ready(function(){
 				}
 			});
 		}
+	});
+	
+	$("#addButton").click(function(){
+		
+		var od1 = $("#od").val();
+		var do1 = $("#doo").val();
+		var cas1 = $("#cas").val();
+		var cena1 = $("#cena").val();
+		var opis1 = $("#opis").val();
+		
+		if (od1=="" || do1=="" || cas1=="" || cena1==""){
+			$("#addErrorLog").text("Nekatera polja so prazna");
+		}else{
+			
+			
+			var data={
+				od:od1,
+				doo:do1,
+				cas:cas1,
+				cena:cena1,
+				opis:opis1
+			};
+			
+			$.post("dodaj.php", data, function(response, status){
+				
+					if(response=="addedSuccess"){
+						$("#addErrorLog").text("Uspesno dodajanje");
+					}
+					else if(response=="alreadyExists"){
+						$("#addErrorLog").text("Enak prevoz je ze objavljen");
+						
+					}else{
+						$("#addErrorLog").text("Napaka: "+response+", "+status);
+					
+					}
+				});
+			}
+		});
+	
+	$(".clickable").click(function(){
+		window.location = $(this).data("href");
 	});
 
 });

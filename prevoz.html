@@ -1,0 +1,62 @@
+<html>
+	<body>
+		<?php
+			require "init.php";
+			
+			$st_prevoz = $_GET["prevoz"];
+			
+			//gathering all data needed for the carpool ride
+			$sql_query="select id_uporabniki, od, do, cas, cas_objave, cena, opis from MIT_prevozi where id_prevozi like '$st_prevoz';";
+			$result = mysqli_fetch_row(mysqli_query($con,$sql_query));
+			
+			//gathering the username of the id of the above ride
+			$sql_query="select uporabnisko_ime, telefon from MIT_uporabniki where id_uporabniki like '$result[0]';";
+			$resultUser = mysqli_fetch_row(mysqli_query($con,$sql_query));
+			
+			$sql_query="select reg_tablica, opis_avta, st_mest, zavarovanje from MIT_avti where id_uporabniki like '$result[0]';";
+			$resultCarInfo = mysqli_fetch_row(mysqli_query($con,$sql_query));
+			
+
+		?>
+		<h1>Prevoz uporabnika <?php echo $resultUser[0] ?></h1>
+		
+		<div>
+			<?php
+				$dan = substr($result[3], 8, 2);
+				$mesec = substr($result[3], 5, 2);
+				$leto = substr($result[3], 0, 4);
+				$ura = str_replace("0", "", substr($result[3], 11, 2));
+				$minuta = substr($result[3], 14, 2);
+				
+				$relacija = $result[1]." - ".$result['2'];
+				$st_mest = $resultCarInfo[2];
+				$cena = $result[5]." Eur";
+				$opis = $result[6];
+				$opisAvta = $resultCarInfo[1];
+				$reg = $resultCarInfo[0];
+				$zavarovanje = $resultCarInfo[3];
+				//to add: format change to phone number
+				$tel = $resultUser[1];
+				
+				echo "<b>Datum: </b>".$dan.".".$mesec.".".$leto."<br />";
+				echo "<b>Ura: </b>".$ura.":".$minuta."<br />";
+				echo "<b>Relacija: </b>".$relacija."<br />";
+				echo "<b>Stevilo prostih mest: </b>".$st_mest."<br />";
+				echo "<b>Cena: </b>".$cena."<br />";
+				//next line is description that user gave, but rather I think it should force users to enter the specifi car make, model and color
+				echo "<b>Opis avta: </b>".$opisAvta."<br />";
+				echo "<b>Registracijska stevilka: </b>".$tel."<br />";
+				echo "<b>Zavarovanje: </b>".$zavarovanje."<br />";
+				echo "<b>Telefonska stevilka: </b>".$tel."<br />";
+				echo "<b>Dodatne informacije: </b>".$opis."<br />";;
+				
+				$dan = substr($result[4], 8, 2);
+				$mesec = substr($result[4], 5, 2);
+				$leto = substr($result[4], 0, 4);
+				$ura = str_replace("0", "", substr($result[4], 11, 2));
+				$minuta = substr($result[4], 14, 2);
+				echo "<b>Datum objave: </b>".$dan.".".$mesec.".".$leto.", ob ".$ura.":".$minuta;
+			?>
+		</div>
+	</body>
+</html>

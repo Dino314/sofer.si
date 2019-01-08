@@ -12,29 +12,31 @@
 				text-align: left;
 				padding: 8px;
 			}
+			
+			tr:not(:nth-child(1)):hover{
+				color:#aaaaaa;
+				background-color: #FFFFFF;
+			}
+			
+			tr:nth-child(even):hover {
+				color:#aaaaaa;
+				background-color: #FFFFFF;
+			}
 
 			tr:nth-child(even) {
 				background-color: #dddddd;
 			}
+			
+			p.clickable:hover{
+				color:#aaaaaa;
+			}
 		</style>
+		<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+		<script src="script.js"></script>
 	</head>
 	<body>
-		<?php
-			require "init.php";
-			session_start();
-			
-			if(isset($_SESSION['sessionName'])){
-				//used for getting the ID of the logged in user for inserting new rides, not here; to be deleted after completed testing
-				$uporabnisko_ime = $_SESSION['sessionName'];
-				$sql_query = "select id_uporabniki from sk6_uporabniki where uporabnisko_ime like '$uporabnisko_ime';";
-				$result = mysqli_fetch_row(mysqli_query($con,$sql_query));
-				echo "id: ".$result[0];
-				echo ", ime: ".$uporabnisko_ime;
-			}else{
-				echo "error in session";
-			}
-		?>
-		<br />
+		
+		<p class="clickable" data-href="dodaj.html"><b>Dodaj prevoz tukaj</b></p>
 		<br />
 		<!--table, where all the possible offers are displayed here; at the end of testing, to add function that doesn't display offers that are older than the current time-->
 		<table>
@@ -46,14 +48,18 @@
 			</tr>
 
 			<?php
+				require "init.php";
 				//php script for getting carpooling offer from database and then in a while loop to write each row in HTML table
-				$sql_query="select od, do, cas, cena from sk6_prevozi order by cas, od;";
+				$sql_query="select id_prevozi, od, do, cas, cena from MIT_prevozi order by cas, od limit 10;";
 				$result = mysqli_query($con,$sql_query);
 				
 				while($row = mysqli_fetch_array($result)){
+				$link = "prevoz.html?prevoz=".$row['id_prevozi'];
+				//echo $link;
 			?>
 			
-			<tr>
+			<!--<tr onclick="window.location='https://www.google.com/';">-->
+			<tr class="clickable" data-href="<?php echo $link ?>">
 				<td><?php echo $row['od']?></td>
 				<td><?php echo $row['do']?></td>
 				<td>
@@ -73,6 +79,6 @@
 			<?php
 				}
 			?>
-		</table>				
+		</table>
 	</body>
 </html>

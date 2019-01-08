@@ -1,0 +1,34 @@
+<html>
+	<head>
+		<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+		<script src="script.js"></script>
+	</head>
+	<body>
+		<h1>Vnesi podatke</h1>
+		<p>Vsi podatki, razen opisa, so obvezni</p>
+		
+		<table>
+			<tr>
+				<th>Od</th>
+				<th>Do</th>
+				<th>Cas</th>
+				<th>Cena v Eur</th>
+				<th>Opis</th>
+				<th></th>
+			</tr>
+			<tr>
+				<div>
+					<form>
+						<td><input type="text" id="od"></td>
+						<td><input type="text" id="doo"></td>
+						<td><input type="text" id="cas" value="2019-01-23 16:00:00"></td>
+						<td><input type="text" id="cena"></td>
+						<td><input type="text" id="opis"></td>
+						<td><input type="button" id="addButton" value="Dodaj"/></td>
+					</form>
+				</div>
+			</tr>
+		</table>
+		<p id="addErrorLog"></p>
+	</body>
+</html>
