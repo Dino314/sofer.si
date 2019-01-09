@@ -103,19 +103,72 @@ $(document).ready(function(){
 			
 			$.post("dodaj.php", data, function(response, status){
 				
-					if(response=="addedSuccess"){
-						$("#addErrorLog").text("Uspesno dodajanje");
-					}
-					else if(response=="alreadyExists"){
-						$("#addErrorLog").text("Enak prevoz je ze objavljen");
-						
-					}else{
-						$("#addErrorLog").text("Napaka: "+response+", "+status);
+				if(response=="addedSuccess"){
+					$("#addErrorLog").text("Uspesno dodajanje");
+				}
+				else if(response=="alreadyExists"){
+					$("#addErrorLog").text("Enak prevoz je ze objavljen");
 					
-					}
-				});
+				}else{
+					$("#addErrorLog").text("Napaka: "+response+", "+status);
+				
+				}
+			});
+		}
+	});
+	
+	$("#addCar").click(function(){
+		
+		var reg_tablica1 = $("#reg_tablica").val();
+		var opis_avta1 = $("#opis_avta").val();
+		var st_mest1 = $("#st_mest").val();
+		var zavarovanje1 = $("#zavarovanje").val();
+		
+		if (reg_tablica1=="" || opis_avta1=="" || st_mest1=="" || zavarovanje1==""){
+			$("#carErrorLog").text("Nekatera polja so prazna");
+		}else{
+			
+			
+			var data={
+				reg_tablica:reg_tablica1,
+				opis_avta:opis_avta1,
+				st_mest:st_mest1,
+				zavarovanje:zavarovanje1
+			};
+			
+			$.post("dodajAvto.php", data, function(response, status){
+				
+				if(response=="addedSuccess"){
+					$("#carErrorLog").text("Uspesno dodajanje avta");
+				}
+				else if(response=="alreadyExists"){
+					$("#carErrorLog").text("Imate ze prijavljen avto na tem racunu");
+					
+				}else{
+					$("#carErrorLog").text("Napaka: "+response+", "+status);
+				
+				}
+			});
+		}
+	});
+	
+	$("#rezerviraj").click(function() {
+		
+		$.post("rezerviraj.php", "", function(response, status){
+				
+			if(response=="zasedeno"){
+				$("#rezervirajErrorLog").text("Ni vec prostih mest");
+			}
+			else if(response=="reserveSuccess"){
+				//need to add function to update the current number of free seats, for now you need to refresh the page
+				$("#rezervirajErrorLog").text("Uspesna rezervacija");
+				
+			}else{
+				$("#rezervirajErrorLog").text("Napaka: "+response+", "+status);
+			
 			}
 		});
+	});
 	
 	$(".clickable").click(function(){
 		window.location = $(this).data("href");

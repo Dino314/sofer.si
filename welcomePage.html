@@ -1,10 +1,11 @@
 <html>
 	<head>
-		<!--table styling-->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<!--table styling, might add in seperate file-->
 		<style>
 			table {
 				border-collapse: collapse;
-				width: 70%;
+				width: 100%;
 			}
 
 			td, th {
@@ -30,13 +31,55 @@
 			p.clickable:hover{
 				color:#aaaaaa;
 			}
+			
+			#left, #right{
+				text-align: center;
+				width: 200px;
+				border: 3px solid #bbbbbb;
+				border-radius: 15px;
+			}
+			
+			#left:hover, #right:hover{
+				color:#FFFFFF;
+				background-color: #aaaaaa;
+			}
+			
+			#left{
+				float: left;
+			}
+			
+			#right{
+				float: right;
+			}
+			
+			@media only screen and (max-width: 768px) {
+				#left{
+					margin-top: 5%;
+				}
+				
+				#right{
+					float: left;
+					margin-bottom: 5%;
+					margin-top: 5%;
+				}
+				
+				#left, #right{
+					width: 50%;
+				}
+			}
 		</style>
 		<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
 		<script src="script.js"></script>
 	</head>
 	<body>
 		
-		<p class="clickable" data-href="dodaj.html"><b>Dodaj prevoz tukaj</b></p>
+		<div>
+			<div id="left" class="clickable" data-href="dodaj.html"><p><b>Dodaj prevoz tukaj</b></p></div>
+			<div id="left" class="clickable" data-href="dodajAvto.html"><p><b>Dodaj avto tukaj</b></p></div>
+			<div id="right" class="clickable" data-href="odjava.php"><p><b>Odjava</b></p></div>
+		</div>
+		<br />
+		<br />
 		<br />
 		<!--table, where all the possible offers are displayed here; at the end of testing, to add function that doesn't display offers that are older than the current time-->
 		<table>
@@ -50,7 +93,8 @@
 			<?php
 				require "init.php";
 				//php script for getting carpooling offer from database and then in a while loop to write each row in HTML table
-				$sql_query="select id_prevozi, od, do, cas, cena from MIT_prevozi order by cas, od limit 10;";
+				//add " limit 10" after completed testing
+				$sql_query="select id_prevozi, od, do, cas, cena from MIT_prevozi order by cas, od;";
 				$result = mysqli_query($con,$sql_query);
 				
 				while($row = mysqli_fetch_array($result)){

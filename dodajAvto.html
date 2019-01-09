@@ -1,0 +1,93 @@
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<style>
+			.clickable, div#addCar{
+				float: left;
+				text-align: center;
+				width: 200px;
+				border: 3px solid #bbbbbb;
+				border-radius: 15px;
+			}
+			
+			.clickable:hover, div#addCar:hover{
+				color:#FFFFFF;
+				background-color: #aaaaaa;
+			}
+			
+			#prvi, #drugi{
+				overflow: hidden;
+			}
+			
+			#vnos{
+				float:left;
+				margin-right:1%;
+			}
+			
+			@media only screen and (max-width: 768px) {
+				.clickable, div#addCar{
+					text-align: center;
+					
+					border: 3px solid #bbbbbb;
+					border-radius: 15px;
+					margin-top: 5%;
+				}
+			}
+		</style>
+		<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+		<script src="script.js"></script>
+	</head>
+	<body>
+		<h1>Vnesi podatke</h1>
+		<p>Vsi podatki so obvezni, trenutno lahko imate le en avto na racun</p>
+		<!--
+		<table>
+			<tr>
+				<th>Stevilka registrske tablice<br />(v formatu KPAB123)</th>
+				<th>Opis avta</th>
+				<th>Maksimalno stevilo<br />prostih mest</th>
+				<th>Vrsta zavarovanja</th>
+				<th></th>
+			</tr>
+			<tr>
+				<div>
+					<form>
+						<td><input type="text" id="reg_tablica"></td>
+						<td><input type="text" id="opis_avta"></td>
+						<td><input type="text" id="st_mest"></td>
+						<td><input type="text" id="zavarovanje"></td>
+						<td><input type="button" id="addCar" value="Dodaj"/></td>
+					</form>
+				</div>
+			</tr>
+		</table>-->
+		
+		<div id="prvi">
+			<div id="vnos">
+				<p>Stevilka registrske tablice<br />(v formatu KPAB123):</p>
+				<br />
+				<input type="text" id="reg_tablica">
+			</div>
+			<div id="vnos">
+				<p><br />Opis avta:</p>
+				<br />
+				<input type="text" id="opis_avta">
+			</div>
+			<div id="vnos">
+				<p>Maksimalno stevilo<br />prostih mest:</p>
+				<br />
+				<input type="text" id="st_mest">
+			</div>
+			<div id="vnos">
+				<p><br />Vrsta zavarovanja:</p>
+				<br />
+				<input type="text" id="zavarovanje">
+			</div>
+		</div>
+		<div id="drugi">
+			<p id="carErrorLog"></p>
+			<div class="clickable" data-href="welcomePage.html"><p>Nazaj</p></div>
+			<div id="addCar"><p>Dodaj</p></div>
+		</div>
+	</body>
+</html>

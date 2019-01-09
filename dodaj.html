@@ -1,12 +1,46 @@
 <html>
 	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<style>
+			.clickable, #addButton, #napaka{
+				float: left;
+				text-align: center;
+				width: 200px;
+				border: 3px solid #bbbbbb;
+				border-radius: 15px;
+			}
+			
+			.clickable:hover, #addButton:hover, #napaka:hover{
+				color:#FFFFFF;
+				background-color: #aaaaaa;
+			}
+			
+			#prvi, #drugi{
+				overflow: hidden;
+			}
+			
+			#vnos{
+				float:left;
+				margin-right:1%;
+			}
+			
+			@media only screen and (max-width: 768px) {
+				.clickable, #addButton, #napaka{
+					text-align: center;
+					
+					border: 3px solid #bbbbbb;
+					border-radius: 15px;
+					margin-top: 5%;
+				}
+			}
+		</style>
 		<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
 		<script src="script.js"></script>
 	</head>
 	<body>
 		<h1>Vnesi podatke</h1>
 		<p>Vsi podatki, razen opisa, so obvezni</p>
-		
+		<!--
 		<table>
 			<tr>
 				<th>Od</th>
@@ -14,7 +48,6 @@
 				<th>Cas</th>
 				<th>Cena v Eur</th>
 				<th>Opis</th>
-				<th></th>
 			</tr>
 			<tr>
 				<div>
@@ -24,11 +57,69 @@
 						<td><input type="text" id="cas" value="2019-01-23 16:00:00"></td>
 						<td><input type="text" id="cena"></td>
 						<td><input type="text" id="opis"></td>
-						<td><input type="button" id="addButton" value="Dodaj"/></td>
-					</form>
 				</div>
 			</tr>
-		</table>
-		<p id="addErrorLog"></p>
+		</table>-->
+		
+		<div id="prvi">
+			<div id="vnos">
+				<p>Od:</p>
+				<br />
+				<input type="text" id="od">
+			</div>
+			<div id="vnos">
+				<p>Do:</p>
+				<br />
+				<input type="text" id="doo">
+			</div>
+			<div id="vnos">
+				<p>Cas:</p>
+				<br />
+				<input type="text" id="cas" value="2019-01-23 16:00:00">
+			</div>
+			<div id="vnos">
+				<p>Cena v Eur:</p>
+				<br />
+				<input type="text" id="cena">
+			</div>
+			<div id="vnos">
+				<p>Opis:</p>
+				<br />
+				<input type="text" id="opis">
+			</div>
+			<div id="vnos">
+				<p>Stevilo prostih mest:</p>
+				<br />
+				<input type="text" id="prosto">
+			</div>
+		</div>
+		<div id="drugi">
+			<p id="addErrorLog"></p>
+			<div class="clickable" data-href="welcomePage.html"><p>Nazaj</p></div>
+			<?php
+				require "init.php";
+				session_start();
+				
+				$uporabnisko_ime = $_SESSION['sessionName'];
+				$sql_query = "select id_uporabniki from MIT_uporabniki where uporabnisko_ime like '$uporabnisko_ime';";
+				$result = mysqli_fetch_row(mysqli_query($con,$sql_query));
+		
+				$id_uporabniki = $result[0];
+				
+				$sql_query="select id_uporabniki from MIT_avti where id_uporabniki like '$id_uporabniki';";
+				$result = mysqli_query($con,$sql_query);
+				
+				if(mysqli_num_rows($result)>0){
+			?>
+					<div id="addButton"><p>Dodaj</p></div>
+			<?php
+				}else{
+			?>
+					<div id="napaka"><p>Nimate dodanega avta</p></div>
+			<?php
+				}
+			?>
+			
+		</div>
 	</body>
 </html>

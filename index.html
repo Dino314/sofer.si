@@ -1,20 +1,29 @@
 <html>
 	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="stylesheet" href="style.css">
 		<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
 		<script src="script.js"></script>
 	</head>
 	<body>
+	<?php
+		require "init.php";
+		session_start();
+		
+		if(isset($_SESSION['sessionName'])){
+			header('Location: welcomePage.html');
+		}
+	?>
 		<!--Login field-->
 		<div id="loginform">
 			<form>
-				Username: <input type="text" id="login_ime" value="dino"/></br>
-				Password: <input type="password" id="login_geslo" value="pass"/>
+				Username: <input type="text" id="login_ime" value=""/></br>
+				Password: <input type="password" id="login_geslo" value=""/>
 							
 				<input type="button" id="loginButton" value="Log in"/>
 			</form>
 			<button onclick="registerLogin()">Sign up</button>
-			<p id="infoFormLog">infoFormLog</p>
+			<p id="infoFormLog"></p>
 		</div>
 		
 		<!--Registration field, hidden on beginning-->
@@ -27,7 +36,7 @@
 				<input type="button" id="registerButton" value="Register"/>
 			</form>
 			<button onclick="registerLogin()">Log in</button>
-			<p id="infoFormReg">infoFormReg</p>
+			<p id="infoFormReg"></p>
 		
 		</div>
 	</body>
