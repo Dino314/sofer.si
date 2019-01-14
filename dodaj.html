@@ -100,11 +100,11 @@
 				require "init.php";
 				session_start();
 				
-				$uporabnisko_ime = $_SESSION['sessionName'];
-				$sql_query = "select id_uporabniki from MIT_uporabniki where uporabnisko_ime like '$uporabnisko_ime';";
-				$result = mysqli_fetch_row(mysqli_query($con,$sql_query));
+				//$uporabnisko_ime = $_SESSION['id_uporabniki'];
+				//$sql_query = "select id_uporabniki from MIT_uporabniki where uporabnisko_ime like '$uporabnisko_ime';";
+				//$result = mysqli_fetch_row(mysqli_query($con,$sql_query));
 		
-				$id_uporabniki = $result[0];
+				$id_uporabniki = $_SESSION['id_uporabniki'];
 				
 				$sql_query="select id_uporabniki from MIT_avti where id_uporabniki like '$id_uporabniki';";
 				$result = mysqli_query($con,$sql_query);

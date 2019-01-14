@@ -2,13 +2,13 @@
 	require "init.php";
 	session_start();
 	
-	if(isset($_SESSION['sessionName'])){
+	if(isset($_SESSION['id_uporabniki'])){
 		
-		$uporabnisko_ime = $_SESSION['sessionName'];
-		$sql_query = "select id_uporabniki from MIT_uporabniki where uporabnisko_ime like '$uporabnisko_ime';";
-		$result = mysqli_fetch_row(mysqli_query($con,$sql_query));
+		// $uporabnisko_ime = $_SESSION['id_uporabniki'];
+		// $sql_query = "select id_uporabniki from MIT_uporabniki where uporabnisko_ime like '$uporabnisko_ime';";
+		// $result = mysqli_fetch_row(mysqli_query($con,$sql_query));
 		
-		$id_uporabniki = $result[0];
+		$id_uporabniki = $_SESSION['id_uporabniki'];
 		$reg_tablica=$_POST["reg_tablica"];
 		$opis_avta=$_POST["opis_avta"];
 		$st_mest=$_POST["st_mest"];

@@ -1,7 +1,6 @@
 <html>
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<!--table styling, might add in seperate file-->
 		<style>
 			table {
 				border-collapse: collapse;
@@ -68,42 +67,32 @@
 				}
 			}
 		</style>
-		<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-		<script src="script.js"></script>
 	</head>
 	<body>
+		<h1>Rezervirani prevozi</h1>
+		<p>Tukaj se nahajajo vsi prevozi, ki ste jih rezervirali</p>
 		
-		<div>
-			<div id="left" class="clickable" data-href="dodaj.html"><p><b>Dodaj prevoz tukaj</b></p></div>
-			<div id="left" class="clickable" data-href="mojiprevozi.html"><p><b>Moji prevozi</b></p></div>
-			<div id="left" class="clickable" data-href="rezerviraniPrevozi.html"><p><b>Rezervirani prevozi</b></p></div>
-			<div id="left" class="clickable" data-href="dodajAvto.html"><p><b>Urejanje avtov</b></p></div>
-			
-			<div id="right" class="clickable" data-href="odjava.php"><p><b>Odjava</b></p></div>
-		</div>
-		<br />
-		<br />
-		<br />
-		<!--table, where all the possible offers are displayed here; at the end of testing, to add function that doesn't display offers that are older than the current time-->
-		<table>
-			<tr>
-				<th>Od</th>
-				<th>Do</th>
-				<th>Cas</th>
-				<th>Cena</th>
-			</tr>
-
-			<?php
+		<?php
 				require "init.php";
-				//php script for getting carpooling offer from database and then in a while loop to write each row in HTML table
-				//add " limit 10" after completed testing
-				$sql_query="select id_prevozi, od, do, cas, cena from MIT_prevozi order by cas, od;";
+				session_start();
+				
+				$id_uporabniki = $_SESSION['id_uporabniki'];
+				
+				$sql_query="select b.id_prevozi, od, do, cas, cena
+					from (select id_prevozi
+						from MIT_rezervirano
+						where id_uporabniki like '$id_uporabniki') as a
+					join MIT_prevozi as b on a.id_prevozi = b.id_prevozi
+				;";
 				$result = mysqli_query($con,$sql_query);
+				//echo $result;
+				
+				if(mysqli_num_rows($result)>0){
 				
 				while($row = mysqli_fetch_array($result)){
 				$link = "prevoz.html?prevoz=".$row['id_prevozi'];
 				//echo $link;
-			?>
+		?>
 			
 			<!--<tr onclick="window.location='https://www.google.com/';">-->
 			<tr class="clickable" data-href="<?php echo $link ?>">
@@ -126,6 +115,12 @@
 			<?php
 				}
 			?>
-		</table>
+			<?php
+				}else{
+			?>
+					
+			<?php
+				}
+		?>
 	</body>
 </html>
