@@ -2,6 +2,31 @@
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<style>
+			table {
+					border-collapse: collapse;
+					width: 100%;
+				}
+				
+			td, th {
+					border: 1px solid #dddddd;
+					text-align: left;
+					padding: 8px;
+				}
+			
+			tr:not(:nth-child(1)):hover{
+				color:#aaaaaa;
+				background-color: #FFFFFF;
+			}
+			
+			tr:nth-child(even):hover {
+				color:#aaaaaa;
+				background-color: #FFFFFF;
+			}
+
+			tr:nth-child(even) {
+				background-color: #dddddd;
+			}
+		
 			.clickable, div#addCar{
 				float: left;
 				text-align: center;
@@ -23,6 +48,8 @@
 				float:left;
 				margin-right:1%;
 			}
+			
+			
 			
 			@media only screen and (max-width: 768px) {
 				.clickable, div#addCar{
@@ -88,6 +115,60 @@
 			<p id="carErrorLog"></p>
 			<div class="clickable" data-href="welcomePage.html"><p>Nazaj</p></div>
 			<div id="addCar"><p>Dodaj</p></div>
+		</div><br />
+		<div>
+			<?php
+				require "init.php";
+				session_start();
+				
+				$id_uporabniki = $_SESSION['id_uporabniki'];
+				
+				$sql_query="select opis_avta, reg_tablica, st_mest, zavarovanje
+					from MIT_avti
+					where id_uporabniki like '$id_uporabniki'
+				;";
+				$resultCar = mysqli_query($con,$sql_query);
+				
+				if(mysqli_num_rows($resultCar)>0){
+			?>
+			<table>
+					<tr>
+						<th>Opis avta</th>
+						<th>Registrska tablica</th>
+						<th>Stevilo prostih mest</th>
+						<th>Zavarovanje</th>
+					</tr>
+			<?php
+					while($row = mysqli_fetch_array($resultCar)){
+					//$link = "prevoz.html?prevoz=".$row['id_prevozi'];
+					//echo $link;
+			?>
+				
+				<!--<tr onclick="window.location='https://www.google.com/';">-->
+				<tr>
+					<td><?php echo $row['opis_avta']?></td>
+					<td><?php echo $row['reg_tablica']?></td>
+					<td><?php echo $row['st_mest']?></td>
+					<td><?php echo $row['zavarovanje']?></td>
+				</tr>
+				
+				<?php
+					}
+				?>
+				</table>
+				<!--------------------------------------------------------------------------------------->
+				
+				<?php
+					}else{
+				?>
+					<p>
+						Nimate dodanega avta, 
+						brez avta ne morete objavljati prevozov. 
+						Kliknite tukaj da dodate avto
+					</p>
+				<?php
+					}
+			?>
 		</div>
 	</body>
 </html>

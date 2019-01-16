@@ -1,0 +1,231 @@
+	<html>
+		<head>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
+			<style>
+				div.clickable{
+					margin-top: 5%;
+					float: left;
+					text-align: center;
+					width: 200px;
+					border: 3px solid #bbbbbb;
+					border-radius: 15px;
+				}
+				
+				div.clickable:hover{
+					color:#FFFFFF;
+					background-color: #aaaaaa;
+				}		
+				
+				table {
+					border-collapse: collapse;
+					width: 100%;
+				}
+
+				td, th {
+					border: 1px solid #dddddd;
+					text-align: left;
+					padding: 8px;
+				}
+				
+				tr:not(:nth-child(1)):hover{
+					color:#aaaaaa;
+					background-color: #FFFFFF;
+				}
+				
+				tr:nth-child(even):hover {
+					color:#aaaaaa;
+					background-color: #FFFFFF;
+				}
+
+				tr:nth-child(even) {
+					background-color: #dddddd;
+				}
+				
+				p.clickable:hover{
+					color:#aaaaaa;
+				}
+				
+				#left, #right{
+					text-align: center;
+					width: 200px;
+					border: 3px solid #bbbbbb;
+					border-radius: 15px;
+				}
+				
+				#left:hover, #right:hover{
+					color:#FFFFFF;
+					background-color: #aaaaaa;
+				}
+				
+				#left{
+					float: left;
+				}
+				
+				#right{
+					float: right;
+				}
+				
+				@media only screen and (max-width: 768px) {
+					#left{
+						margin-top: 5%;
+					}
+					
+					#right{
+						float: left;
+						margin-bottom: 5%;
+						margin-top: 5%;
+					}
+					
+					#left, #right{
+						width: 50%;
+					}
+				}
+			</style>
+			<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+			<script src="script.js"></script>
+		</head>
+		<body>
+			<?php
+				require "init.php";
+				session_start();
+				
+				$id_uporabniki = $_GET["id_uporabniki"];
+				//$_SESSION['id_prevozi']=$st_prevoz;
+				
+				//gathering all data needed for the carpool ride
+				//$sql_query="select id_uporabniki, od, do, cas, cas_objave, cena, opis, st_prosto from MIT_prevozi where id_prevozi like '$st_prevoz';";
+				//$result = mysqli_fetch_row(mysqli_query($con,$sql_query));
+				
+				//gathering the username of the id of the above ride
+				$sql_query="select uporabnisko_ime, email, telefon, vsota_ocen, st_ocen 
+					from MIT_uporabniki 
+					where id_uporabniki like '$id_uporabniki'
+				;";
+				$resultUser = mysqli_fetch_row(mysqli_query($con,$sql_query));
+				
+				$sql_query="select opis_avta, reg_tablica, st_mest, zavarovanje
+					from MIT_avti
+					where id_uporabniki like '$id_uporabniki'
+				;";
+				$resultCar = mysqli_query($con,$sql_query);
+				
+				$sql_query="select id_prevozi, od, do, cas, cena
+					from MIT_prevozi
+					where id_uporabniki like '$id_uporabniki'
+				;";
+				$resultRide = mysqli_query($con,$sql_query);
+				
+				
+				//gathering all data for the users car
+				//$sql_query="select reg_tablica, opis_avta, zavarovanje, st_mest from MIT_avti where id_uporabniki like '$result[0]';";
+				//$resultCarInfo = mysqli_fetch_row(mysqli_query($con,$sql_query));
+				
+
+			?>
+			<h1>Profil uporabnika <?php echo $resultUser[0] ?></h1>
+			<p>Tukaj lahko pregledate profil uporabnika in ga ocenite</p>
+			<div>
+				<?php
+					$email = $resultUser[1];
+					$telefon = $resultUser[2];
+					$vsota_ocen = $resultUser[3];
+					$st_ocen = $resultUser[4];
+					if ($st_ocen != 0){
+						$average_ocena = round($vsota_ocen / $st_ocen, 2);
+					}else{
+						$average_ocena = 0;
+					}
+					
+					//echo "<b>Uporabnisko ime: </b>".$uporabnisko_ime."<br />";
+					echo "<b>E-posta: </b>".$email."<br />";
+					echo "<b>Ocena (med 1 in 5): </b>".$average_ocena."<br />";
+					//echo "Ocenite uporabnika od 1 do 5: ";
+					
+					echo "<b>Avti:</b><br /><br />";
+					?>
+			</div>
+			
+			
+			<?php
+					if(mysqli_num_rows($resultCar)>0){
+			?>
+			<table>
+					<tr>
+						<th>Opis avta</th>
+						<th>Registrska tablica</th>
+						<th>Stevilo prostih mest</th>
+						<th>Zavarovanje</th>
+					</tr>
+			<?php
+					while($row = mysqli_fetch_array($resultCar)){
+					//$link = "prevoz.html?prevoz=".$row['id_prevozi'];
+					//echo $link;
+			?>
+				
+				<!--<tr onclick="window.location='https://www.google.com/';">-->
+				<tr class="clickable" data-href="<?php //echo $link ?>">
+					<td><?php echo $row['opis_avta']?></td>
+					<td><?php echo $row['reg_tablica']?></td>
+					<td><?php echo $row['st_mest']?></td>
+					<td><?php echo $row['zavarovanje']?></td>
+				</tr>
+				
+				<?php
+					}
+				?>
+				</table><br />
+				<b>Objavljeni prevozi:</b><br />
+				<!--------------------------------------------------------------------------------------->
+				<?php					
+					if(mysqli_num_rows($resultRide)>0){
+				?>
+				<table>
+					<tr>
+						<th>Od</th>
+						<th>Do</th>
+						<th>Cas</th>
+						<th>Cena</th>
+					</tr>
+				<?php
+					while($row = mysqli_fetch_array($resultRide)){
+					$link = "prevoz.html?prevoz=".$row['id_prevozi'];
+					//echo $link;
+				?>
+				
+				<!--<tr onclick="window.location='https://www.google.com/';">-->
+				<tr class="clickable" data-href="<?php echo $link ?>">
+					<td><?php echo $row['od']?></td>
+					<td><?php echo $row['do']?></td>
+					<td><?php echo $row['cas']?></td>
+					<td><?php echo $row['cena']?></td>
+				</tr>
+				
+				<?php
+					}
+				?>
+				</table><br />
+				
+				<?php
+					}else{
+				?>
+				<p class="clickable" data-href="dodaj.html">Nimate objavljenih prevozov, klinite tukaj da jih objavite</p>
+				
+				<?php
+					}
+				?>
+				<!--------------------------------------------------------------------------------------->
+				
+				<?php
+					}else{
+				?>
+					<p class="clickable" data-href="dodajAvto.html">Nimate dodanega avta, kliknite tukaj da dodate avto</p>
+				<?php
+					}
+			?>
+			
+			<div>
+				
+			</div>
+			<div class="clickable" data-href="<?php echo $_SESSION['nazaj'] ?>"><p>Nazaj</p></div>
+		</body>
+	</html>

@@ -1,0 +1,61 @@
+<script src="script.js"></script>
+
+<table id="isciTabela">
+				<tr>
+					<th>Od</th>
+					<th>Do</th>
+					<th>Cas</th>
+					<th>Cena</th>
+				</tr>
+
+				<?php
+					require "init.php";
+					session_start();
+					
+					$_SESSION['nazaj']="welcomePage.html";
+					
+					$od = $_SESSION['od'];
+					$do = $_SESSION['do'];
+					$datum = $_SESSION['datum'];
+					$cas = $_SESSION['cas'];
+					
+					//php script for getting carpooling offer from database and then in a while loop to write each row in HTML table
+					//add " limit 10" after completed testing
+					$sql_query="select id_prevozi, od, do, cas, cena
+						from MIT_prevozi 
+						where od like '$od' and do like '$do' and date(cas) like '$datum'
+						order by cas, od;";
+					$result = mysqli_query($con,$sql_query);
+					
+					while($row = mysqli_fetch_array($result)){
+					$link = "prevoz.html?prevoz=".$row['id_prevozi'];
+					//echo $link;
+				?>
+				
+				<!--<tr onclick="window.location='https://www.google.com/';">-->
+				<tr class="clickable" data-href="<?php echo $link ?>">
+					<td><?php echo $row['od']?></td>
+					<td><?php echo $row['do']?></td>
+					<td>
+						<?php
+							//converting time to a more suitable format
+							$dan = substr($row['cas'], 8, 2);
+							$mesec = substr($row['cas'], 5, 2);
+							$leto = substr($row['cas'], 0, 4);
+							$ura = str_replace("0", "", substr($row['cas'], 11, 2));
+							$minuta = substr($row['cas'], 14, 2);
+							echo $dan.".".$mesec.".".$leto.", ob ".$ura.":".$minuta;
+						?>
+					</td>
+					<td><?php echo $row['cena']." Eur"?></td>
+				</tr>
+				
+				<?php
+					}
+					/*
+					unset($_SESSION['od']);
+					unset($_SESSION['od']);
+					unset($_SESSION['datum']);
+					unset($_SESSION['cas']);*/
+				?>
+			</table>

@@ -84,11 +84,12 @@ $(document).ready(function(){
 		
 		var od1 = $("#od").val();
 		var do1 = $("#doo").val();
-		var cas1 = $("#cas").val();
+		var cas1 = $("#cas").val()+" "+$("#ura").val()+":00";
+		var ura1 = $("#ura").val();
 		var cena1 = $("#cena").val();
 		var opis1 = $("#opis").val();
 		
-		if (od1=="" || do1=="" || cas1=="" || cena1==""){
+		if (od1=="" || do1=="" || cas1=="" || cena1=="" || ura1==""){
 			$("#addErrorLog").text("Nekatera polja so prazna");
 		}else{
 			
@@ -163,6 +164,8 @@ $(document).ready(function(){
 				//need to add function to update the current number of free seats, for now you need to refresh the page
 				$("#rezervirajErrorLog").text("Uspesna rezervacija");
 				
+			}else if(response=="zeRezervirano"){
+				$("#rezervirajErrorLog").text("Prevoz ste ze rezervirali");
 			}else{
 				$("#rezervirajErrorLog").text("Napaka: "+response+", "+status);
 			
@@ -170,9 +173,34 @@ $(document).ready(function(){
 		});
 	});
 	
-	$(".clickable").click(function(){
+	$("#isci").click(function(){
+		
+		var od1 = $("#od").val();
+		var do1 = $("#do").val();
+		var datum1 = $("#datum").val();
+		//var cas1 = $("#cas").val();
+		
+		if (od1=="" || do1=="" || datum1==""/* || cas1==""*/){
+			$("#searchErrorLog").text("Nekatera polja so prazna");
+		}else{
+			
+			var data={
+				od:od1,
+				doo:do1,
+				datum:datum1,
+				//cas:cas1
+			};
+			
+			$.post("isci.php", data, function(response, status){
+				$("#isciTabela").load("isciTabela.html");
+			});
+		}
+	});
+	
+	$(".clickable, .clickableProfile").click(function(){
 		window.location = $(this).data("href");
 	});
+	
 
 });
 

@@ -85,8 +85,8 @@
 		<script src="script.js"></script>
 	</head>
 	<body>
-		<h1>Rezervirani prevozi</h1>
-		<p>Tukaj se nahajajo vsi prevozi, ki ste jih rezervirali</p>
+		<h1>Moji prevozi</h1>
+		<p>Tukaj se nahajajo vsi prevozi, ki ste jih objavili</p>
 		
 		<table>
 				<tr>
@@ -101,13 +101,11 @@
 				session_start();
 				
 				$id_uporabniki = $_SESSION['id_uporabniki'];
-				$_SESSION['nazaj']="rezerviraniPrevozi.html";
+				$_SESSION['nazaj']="mojiPrevozi.html";
 				
-				$sql_query="select b.id_prevozi, od, do, cas, cena
-					from (select id_prevozi
-						from MIT_rezervirano
-						where id_uporabniki like '$id_uporabniki') as a
-					join MIT_prevozi as b on a.id_prevozi = b.id_prevozi
+				$sql_query="select id_prevozi, od, do, cas, cena
+					from MIT_prevozi
+					where id_uporabniki like '$id_uporabniki'
 				;";
 				$result = mysqli_query($con,$sql_query);
 				//echo $result;

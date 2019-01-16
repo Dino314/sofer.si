@@ -43,6 +43,7 @@
 			//gathering all data needed for the carpool ride
 			$sql_query="select id_uporabniki, od, do, cas, cas_objave, cena, opis, st_prosto from MIT_prevozi where id_prevozi like '$st_prevoz';";
 			$result = mysqli_fetch_row(mysqli_query($con,$sql_query));
+			$profil_up = $result[0];
 			
 			//gathering the username of the id of the above ride
 			$sql_query="select uporabnisko_ime, telefon from MIT_uporabniki where id_uporabniki like '$result[0]';";
@@ -54,7 +55,20 @@
 			
 
 		?>
-		<h1>Prevoz uporabnika <?php echo $resultUser[0] ?></h1>
+			<?php
+				if ($profil_up == $_SESSION['id_uporabniki']){
+					?>
+						<h1>Prevoz uporabnika 
+					<?php
+					echo $resultUser[0];
+				}else{
+				?>
+					<h1 class="clickableProfile" data-href="<?php echo "uporabnikProfil.html?id_uporabniki=".$profil_up ?>">
+					Prevoz uporabnika 
+					<u><?php echo $resultUser[0] ?></u>
+				<?php
+				}
+			?></h1>
 		
 		<div>
 			<?php
@@ -98,7 +112,9 @@
 		</div>
 		<div id="prvi">
 			<p id="rezervirajErrorLog"></p>
-			<div class="clickable" data-href="welcomePage.html"><p>Nazaj</p></div>
+			
+				<div class="clickable" data-href="<?php echo $_SESSION['nazaj'] ?>"><p>Nazaj</p></div>
+			
 			<div id="rezerviraj"><p>Rezerviraj</p></div>
 		</div>
 		

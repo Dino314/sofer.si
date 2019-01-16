@@ -1,131 +1,233 @@
-<html>
-	<head>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<!--table styling, might add in seperate file-->
-		<style>
-			table {
-				border-collapse: collapse;
-				width: 100%;
-			}
+	<html>
+		<head>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
+			<!--table styling, might add in seperate file-->
+			<style>
+				table {
+					border-collapse: collapse;
+					width: 100%;
+				}
 
-			td, th {
-				border: 1px solid #dddddd;
-				text-align: left;
-				padding: 8px;
-			}
-			
-			tr:not(:nth-child(1)):hover{
-				color:#aaaaaa;
-				background-color: #FFFFFF;
-			}
-			
-			tr:nth-child(even):hover {
-				color:#aaaaaa;
-				background-color: #FFFFFF;
-			}
+				td, th {
+					border: 1px solid #dddddd;
+					text-align: left;
+					padding: 8px;
+				}
+				
+				tr:not(:nth-child(1)):hover{
+					color:#aaaaaa;
+					background-color: #FFFFFF;
+				}
+				
+				tr:nth-child(even):hover {
+					color:#aaaaaa;
+					background-color: #FFFFFF;
+				}
 
-			tr:nth-child(even) {
-				background-color: #dddddd;
-			}
-			
-			p.clickable:hover{
-				color:#aaaaaa;
-			}
-			
-			#left, #right{
-				text-align: center;
-				width: 200px;
-				border: 3px solid #bbbbbb;
-				border-radius: 15px;
-			}
-			
-			#left:hover, #right:hover{
-				color:#FFFFFF;
-				background-color: #aaaaaa;
-			}
-			
-			#left{
-				float: left;
-			}
-			
-			#right{
-				float: right;
-			}
-			
-			@media only screen and (max-width: 768px) {
-				#left{
-					margin-top: 5%;
+				tr:nth-child(even) {
+					background-color: #dddddd;
+				}
+				
+				p.clickable:hover{
+					color:#aaaaaa;
+				}
+				
+				#left, #leftRez, #right, #noCar{
+					text-align: center;
+					width: 200px;
+					border: 3px solid #bbbbbb;
+					border-radius: 15px;
+					margin-bottom: 1%;
+					margin-right: 1%;
+				}
+				
+				#left:hover, #leftRez:hover, #right:hover{
+					color:#FFFFFF;
+					background-color: #aaaaaa;
+				}
+				
+				#left, #leftRez, #noCar{
+					float: left;
 				}
 				
 				#right{
+					float: right;
+				}
+				
+				div#isci{
 					float: left;
-					margin-bottom: 5%;
-					margin-top: 5%;
+					text-align: center;
+					width: 200px;
+					border: 3px solid #bbbbbb;
+					border-radius: 15px;
 				}
 				
-				#left, #right{
-					width: 50%;
+				div#isci:hover{
+					color:#FFFFFF;
+					background-color: #aaaaaa;
 				}
-			}
-		</style>
-		<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-		<script src="script.js"></script>
-	</head>
-	<body>
-		
-		<div>
-			<div id="left" class="clickable" data-href="dodaj.html"><p><b>Dodaj prevoz tukaj</b></p></div>
-			<div id="left" class="clickable" data-href="mojiprevozi.html"><p><b>Moji prevozi</b></p></div>
-			<div id="left" class="clickable" data-href="rezerviraniPrevozi.html"><p><b>Rezervirani prevozi</b></p></div>
-			<div id="left" class="clickable" data-href="dodajAvto.html"><p><b>Urejanje avtov</b></p></div>
+				
+				#prvi, #drugi{
+					overflow: hidden;
+				}
+				
+				#vnos{
+					float:left;
+					margin-right:1%;
+				}
+				
+				#noCar{
+					background-color: #dddddd;
+					color:#2a2a2a;
+				}
+				
+				@media only screen and (max-width: 768px) {
+					<!-- #left{ -->
+						<!-- margin-top: 5%; -->
+					<!-- } -->
+					
+					#right{
+						float: left;
+						<!-- margin-bottom: 5%; -->
+						<!-- margin-top: 5%; -->
+					}
+					
+					#leftRez, #empty, #noCar{
+						float: right
+					}
+					
+					#left, #right, #leftRez, #empty, #noCar{
+						width: 47%;
+						margin-bottom: 3%;
+					}
+					
+					#empty{
+						height: 9%;
+						<!-- border: 3px solid #bbbbbb; -->
+					}
+				}
+			</style>
 			
-			<div id="right" class="clickable" data-href="odjava.php"><p><b>Odjava</b></p></div>
-		</div>
-		<br />
-		<br />
-		<br />
-		<!--table, where all the possible offers are displayed here; at the end of testing, to add function that doesn't display offers that are older than the current time-->
-		<table>
-			<tr>
-				<th>Od</th>
-				<th>Do</th>
-				<th>Cas</th>
-				<th>Cena</th>
-			</tr>
+			<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+			<script src="script.js"></script>
+			
 
-			<?php
-				require "init.php";
-				//php script for getting carpooling offer from database and then in a while loop to write each row in HTML table
-				//add " limit 10" after completed testing
-				$sql_query="select id_prevozi, od, do, cas, cena from MIT_prevozi order by cas, od;";
-				$result = mysqli_query($con,$sql_query);
+			
+		</head>
+		<body>
+			
+			<div id="prvi">
+				<div id="right" class="clickable" data-href="odjava.php"><p><b>Odjava</b></p></div>
 				
-				while($row = mysqli_fetch_array($result)){
-				$link = "prevoz.html?prevoz=".$row['id_prevozi'];
-				//echo $link;
-			?>
+				<?php
+					require "init.php";
+					session_start();
+					
+					$_SESSION['nazaj']="welcomePage.html";
+					$id_uporabniki = $_SESSION['id_uporabniki'];
+				
+					$sql_query="
+						select id_avti
+						from MIT_avti
+						where id_uporabniki like '$id_uporabniki'
+					;";
+					$resultCar = mysqli_query($con,$sql_query);
+				
+					if(mysqli_num_rows($resultCar)>0){
+				?>
+					<div id="left" class="clickable" data-href="dodaj.html"><p><b>Objavi prevoz</b></p></div>
+				<?php
+					}else{
+				?>
+					<div id="noCar" ><p><b>Nimate avta</b></p></div>
+				<?php
+					}
+				?>
+				<div id="left" class="clickable" data-href="mojiPrevozi.html"><p><b>Moji prevozi</b></p></div>
+				<!-- <div id="empty">aaa</div> -->
+				<div id="leftRez" class="clickable" data-href="rezerviraniPrevozi.html"><p><b>Rezervirani prevozi</b></p></div>
+				<div id="left" class="clickable" data-href="dodajAvto.html"><p><b>Urejanje avtov</b></p></div>
+				<div id="left" class="clickable" data-href="mojProfil.html"><p><b>Moj profil</b></p></div>
+			</div>
+
 			
-			<!--<tr onclick="window.location='https://www.google.com/';">-->
-			<tr class="clickable" data-href="<?php echo $link ?>">
-				<td><?php echo $row['od']?></td>
-				<td><?php echo $row['do']?></td>
-				<td>
-					<?php
-						//converting time to a more suitable format
-						$dan = substr($row['cas'], 8, 2);
-						$mesec = substr($row['cas'], 5, 2);
-						$leto = substr($row['cas'], 0, 4);
-						$ura = str_replace("0", "", substr($row['cas'], 11, 2));
-						$minuta = substr($row['cas'], 14, 2);
-						echo $dan.".".$mesec.".".$leto.", ob ".$ura.":".$minuta;
-					?>
-				</td>
-				<td><?php echo $row['cena']." Eur"?></td>
-			</tr>
+			<div id="drugi">
+				<div id="vnos">
+					<p>Od:</p>
+					
+					<input type="text" id="od" value="Koper">
+				</div>
+				<div id="vnos">
+					<p>Do:</p>
+					
+					<input type="text" id="do" value="Ljubljana">
+				</div>
+				<div id="vnos">
+					<p>Datum:</p>
+					
+					<input type="date" id="datum" value="<?php echo date("Y-m-d") ?>">
+					
+				</div>
+				<div id="vnos">
+					<p>Cas:</p>
+					
+					<input type="time" id="cas">
+				
+				</div>
+				<div id="vnos">
+					<br />
+					<div id="isci"><p><b>Isci</b></p></div>
+					<div><p id="searchErrorLog"></p></div>
+				</div>
+			</div>
 			
-			<?php
-				}
-			?>
-		</table>
-	</body>
-</html>
+			<br />
+			<br />
+			<br />
+			
+			<!--table, where all the possible offers are displayed here; at the end of testing, to add function that doesn't display offers that are older than the current time-->
+			<table id="isciTabela">
+				<tr>
+					<th>Od</th>
+					<th>Do</th>
+					<th>Cas</th>
+					<th>Cena</th>
+				</tr>
+
+				<?php
+					
+					//php script for getting carpooling offer from database and then in a while loop to write each row in HTML table
+					//add " limit 10" after completed testing
+					$sql_query="select id_prevozi, od, do, cas, cena from MIT_prevozi order by od, do, cas;";
+					$result = mysqli_query($con,$sql_query);
+					
+					while($row = mysqli_fetch_array($result)){
+					$link = "prevoz.html?prevoz=".$row['id_prevozi'];
+					//echo $link;
+				?>
+				
+				<!--<tr onclick="window.location='https://www.google.com/';">-->
+				<tr class="clickable" data-href="<?php echo $link ?>">
+					<td><?php echo $row['od']?></td>
+					<td><?php echo $row['do']?></td>
+					<td>
+						<?php
+							//converting time to a more suitable format
+							$dan = substr($row['cas'], 8, 2);
+							$mesec = substr($row['cas'], 5, 2);
+							$leto = substr($row['cas'], 0, 4);
+							//$ura = str_replace("0", "", substr($row['cas'], 11, 2));
+							$ura = preg_replace("[^0]", "", substr($row['cas'], 11, 2), 1);
+							$minuta = substr($row['cas'], 14, 2);
+							echo $dan.".".$mesec.".".$leto.", ob ".$ura.":".$minuta;
+						?>
+					</td>
+					<td><?php echo $row['cena']." Eur"?></td>
+				</tr>
+				
+				<?php
+					}
+				?>
+			</table>
+		</body>
+	</html>

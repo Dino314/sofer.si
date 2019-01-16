@@ -1,0 +1,43 @@
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="style.css">
+		<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+		<script src="script.js"></script>
+	</head>
+	<body>
+	<?php
+		require "init.php";
+		session_start();
+		
+		if(isset($_SESSION['id_uporabniki'])){
+			header('Location: welcomePage.html');
+		}
+	?>
+		<!--Login field-->
+		<div id="loginform">
+			<form>
+				Username: <input type="text" id="login_ime" value=""/></br>
+				Password: <input type="password" id="login_geslo" value=""/>
+							
+				<input type="button" id="loginButton" value="Log in"/>
+			</form>
+			<button onclick="registerLogin()">Sign up</button>
+			<p id="infoFormLog"></p>
+		</div>
+		
+		<!--Registration field, hidden on beginning-->
+		<div id="registerform">
+			<form>
+				Username: <input type="text" id="register_ime"/></br>
+				Password: <input type="password" id="register_geslo"/></br>
+				E-mail: <input type="email" id="register_mail"/>
+				
+				<input type="button" id="registerButton" value="Register"/>
+			</form>
+			<button onclick="registerLogin()">Log in</button>
+			<p id="infoFormReg"></p>
+		
+		</div>
+	</body>
+</html>
