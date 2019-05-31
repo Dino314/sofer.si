@@ -19,3 +19,5 @@
 	
 	username:dino
 	password:pass
+	
+Everything is very basic, not focused on UI
